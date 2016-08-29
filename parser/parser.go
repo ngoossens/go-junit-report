@@ -2,12 +2,12 @@ package parser
 
 import (
 	"bufio"
+	"fmt"
 	"io"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
-	"fmt"
-	"os"
 )
 
 // Result represents a test result.

@@ -33,8 +33,8 @@ type JUnitTestSuite struct {
 type JUnitTestCase struct {
 	XMLName     xml.Name          `xml:"testcase"`
 	Classname   string            `xml:"classname,attr"`
-	Name        string            `xml:"name,attr"`
-	Time        string            `xml:"time,attr"`
+	Name        string            `xml:"name,attr,omitempty"`
+	Time        string            `xml:"time,attr,omitempty"`
 	SkipMessage *JUnitSkipMessage `xml:"skipped,omitempty"`
 	Failure     *JUnitFailure     `xml:"failure,omitempty"`
 }
@@ -109,6 +109,15 @@ func JUnitReportXML(report *parser.Report, noXMLHeader bool, w io.Writer) error 
 			ts.TestCases = append(ts.TestCases, testCase)
 		}
 
+		suites.Suites = append(suites.Suites, ts)
+	}
+
+  // If there are no tests then add an empty suite to not break some parsers
+	if len(suites.Suites) == 0 {
+		ts := JUnitTestSuite{
+			Tests:      0,
+			Failures:   0,
+		}
 		suites.Suites = append(suites.Suites, ts)
 	}
 
